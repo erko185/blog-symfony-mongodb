@@ -1,0 +1,95 @@
+{# templates/list/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %} Articles{% endblock %}
+{% block styleDirect %}
+    <style>
+        .sorted a {
+            color: red
+        }
+        .article{
+            margin-bottom: 10px;
+        }
+        .article-data{
+            border-bottom: 1px solid black
+        }
+        .sorted-div div{
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .navigation{
+            margin-top: 15px;
+        }
+        .navigation .pagination{
+            -webkit-box-pack: center!important;
+            -ms-flex-pack: center!important;
+            justify-content: center!important;
+        }
+        .navigation a{
+            position: relative;
+            display: block;
+            padding: .5rem .75rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+        }
+        .navigation .current {
+            padding: .5rem .75rem;
+            z-index: 1;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+
+{% endblock %}
+{% block body %}
+
+    <div class="row">
+    <div class="col-md-12">
+    <h1>Articles</h1>
+    </div>
+    <div class="col-md-12 sorted-div">
+        {# sorting of properties based on query components #}
+        <div>Sorted by:</div>
+        <div{% if pagination.isSorted('title') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Title', 'title') }}
+        </div>
+        <div {% if pagination.isSorted('Content') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Content', 'content') }}
+        </div>
+        <div{% if pagination.isSorted('Email') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Email', 'email') }}
+        </div>
+        <div {% if pagination.isSorted('Crated at') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Crated at', 'created_at') }}
+        </div>
+        <div>
+            <a href="{{ path('createArticle') }}" class="btn btn-info">Create article</a>
+        </div>
+    </div>
+
+        {% for article in pagination %}
+            <div class="col-md-6 article">
+                <div class="article-data">
+                    <h2>{{ article.title }}</h2>
+                    <div>Autor:{{ article.email }} Created_at: {{ article.createdAt | date('d.m.y h:i:s') }}  </div>
+
+                    <p style="margin-top: 5px">{{ article.content }}</p>
+
+                </div>
+            </div>
+        {% endfor %}
+
+    <div class="col-md-12">
+        {# display navigation #}
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+
+{% endblock %}
