@@ -31,7 +31,7 @@ class ArticlesController  extends AbstractController
     {
 
         $query =$this->dm->getRepository(Articles::class)->createQueryBuilder('u')
-            ->getQuery();;
+            ->getQuery();
 
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
@@ -45,7 +45,7 @@ class ArticlesController  extends AbstractController
     /**
      * @Route("/create", name="createArticle")
      */
-    public function create(Request $request,DocumentManager $dm): Response
+    public function create(Request $request): Response
     {
         $article=new Articles();
         $form = $this->createForm(ArticlesType::class, $article);
@@ -60,18 +60,6 @@ class ArticlesController  extends AbstractController
             );
         }
 
-        return $this->render('articles/create.html.twig',[
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/save_article", name="saveArticle")
-     */
-    public function saveArticle(Request $request): Response
-    {
-        $article=new Articles();
-        $form = $this->createForm(ArticlesType::class, $article);
         return $this->render('articles/create.html.twig',[
             'form' => $form->createView(),
         ]);
